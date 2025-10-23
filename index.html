@@ -1,0 +1,1838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matthew Lawrence L | Data Engineering Portfolio</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --secondary: #059669;
+            --accent: #d97706;
+            --light-bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            background-color: var(--light-bg);
+            color: var(--text);
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+        
+        body.dark-mode {
+            --light-bg: #0f172a;
+            --card-bg: #1e293b;
+            --text: #f1f5f9;
+            --text-light: #cbd5e1;
+            --border: #334155;
+        }
+        
+        /* Improved dark mode text visibility */
+        body.dark-mode .text-slate-500,
+        body.dark-mode .text-slate-400,
+        body.dark-mode .text-slate-600 {
+            color: var(--text-light) !important;
+        }
+        
+        body.dark-mode .text-slate-800,
+        body.dark-mode .text-slate-700,
+        body.dark-mode .text-slate-900 {
+            color: var(--text) !important;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        body.dark-mode ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        
+        body.dark-mode ::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+        
+        body.dark-mode ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            border-color: var(--primary-light);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(to right, var(--primary-light), var(--secondary));
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -5px rgba(37, 99, 235, 0.4);
+        }
+        
+        .btn-outline {
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            background: transparent;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+        
+        .btn-outline:hover {
+            background: rgba(37, 99, 235, 0.08);
+            transform: translateY(-2px);
+        }
+        
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            letter-spacing: -0.025em;
+        }
+        
+        .title-underline {
+            width: 5rem;
+            height: 0.25rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            margin: 0 auto 2rem auto;
+            border-radius: 2px;
+        }
+        
+        .nav-link {
+            position: relative;
+            color: var(--text-light);
+            transition: color 0.3s ease;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary);
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+        
+        .skill-badge {
+            background: rgba(37, 99, 235, 0.08);
+            color: var(--primary);
+            border: 1px solid rgba(37, 99, 235, 0.15);
+            border-radius: 1.5rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .skill-badge:hover {
+            background: rgba(37, 99, 235, 0.12);
+            transform: scale(1.03);
+        }
+        
+        .social-icon {
+            width: 2.75rem;
+            height: 2.75rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: var(--text-light);
+        }
+        
+        .social-icon:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            color: var(--primary);
+        }
+        
+        .animate-bounce {
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-8px);
+            }
+            60% {
+                transform: translateY(-4px);
+            }
+        }
+        
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+        
+        section {
+            padding: 5rem 1.5rem;
+        }
+        
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .bg-section {
+            background: rgba(248, 250, 252, 0.7);
+            position: relative;
+        }
+        
+        body.dark-mode .bg-section {
+            background: rgba(15, 23, 42, 0.5);
+        }
+        
+        .floating-shape {
+            position: absolute;
+            opacity: 0.05;
+            z-index: 0;
+        }
+        
+        .floating-shape-1 {
+            top: 20%;
+            left: 10%;
+            width: 100px;
+            height: 100px;
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            animation: float 8s ease-in-out infinite, rotate 20s linear infinite;
+        }
+        
+        .floating-shape-2 {
+            top: 60%;
+            right: 10%;
+            width: 150px;
+            height: 150px;
+            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+            background: linear-gradient(to right, var(--secondary), var(--accent));
+            animation: float 10s ease-in-out infinite, rotateReverse 25s linear infinite;
+        }
+        
+        .floating-shape-3 {
+            bottom: 20%;
+            left: 20%;
+            width: 80px;
+            height: 80px;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            background: linear-gradient(to right, var(--accent), var(--primary));
+            animation: float 7s ease-in-out infinite, rotate 15s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        @keyframes rotateReverse {
+            from {
+                transform: rotate(360deg);
+            }
+            to {
+                transform: rotate(0deg);
+            }
+        }
+        
+        .typewriter {
+            overflow: hidden;
+            border-right: 2px solid var(--primary);
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--primary) }
+        }
+        
+        .theme-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle:hover {
+            transform: rotate(30deg);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+        }
+        
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            z-index: 1000;
+            transition: width 0.2s ease;
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Toast notification styles */
+        .toast {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 0.5rem;
+            color: white;
+            font-weight: 500;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+        }
+        
+        .toast.success {
+            background-color: #059669;
+        }
+        
+        .toast.error {
+            background-color: #dc2626;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .data-pipeline {
+            position: relative;
+            height: 100px;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .data-node {
+            position: absolute;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            animation: moveNode 8s linear infinite;
+        }
+        
+        @keyframes moveNode {
+            0% {
+                left: -50px;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+        
+        .data-node:nth-child(1) {
+            background: var(--primary);
+            animation-delay: 0s;
+        }
+        
+        .data-node:nth-child(2) {
+            background: var(--secondary);
+            animation-delay: 1s;
+        }
+        
+        .data-node:nth-child(3) {
+            background: var(--accent);
+            animation-delay: 2s;
+        }
+        
+        .data-node:nth-child(4) {
+            background: #7c3aed;
+            animation-delay: 3s;
+        }
+        
+        .data-node:nth-child(5) {
+            background: #db2777;
+            animation-delay: 4s;
+        }
+        
+        .professional-section {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 1rem;
+            padding: 3rem 2rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        body.dark-mode .professional-section {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+        
+        .professional-section::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -10%;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: rgba(37, 99, 235, 0.05);
+            z-index: 0;
+        }
+        
+        .professional-section::after {
+            content: '';
+            position: absolute;
+            bottom: -20%;
+            left: -10%;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(5, 150, 105, 0.05);
+            z-index: 0;
+        }
+        
+        .professional-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .journey-step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .journey-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 1.5rem;
+            top: 3rem;
+            bottom: -2rem;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            opacity: 0.2;
+        }
+        
+        .step-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 1.5rem;
+            flex-shrink: 0;
+            z-index: 1;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+        
+        .step-description {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+        
+        .highlight-card {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--primary);
+        }
+        
+        body.dark-mode .highlight-card {
+            background: #1e293b;
+        }
+        
+        .highlight-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+        
+        .google-sheets-info {
+            background: rgba(5, 150, 105, 0.08);
+            border: 1px solid rgba(5, 150, 105, 0.15);
+            border-radius: 0.5rem;
+            padding: 1.25rem;
+            margin-top: 1.5rem;
+        }
+        
+        body.dark-mode .google-sheets-info {
+            background: rgba(5, 150, 105, 0.12);
+            border-color: rgba(5, 150, 105, 0.25);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 0.95rem;
+            color: var(--text-light);
+        }
+        
+        .project-status {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+        }
+        
+        .status-completed {
+            background: rgba(5, 150, 105, 0.1);
+            color: #059669;
+        }
+        
+        .status-in-progress {
+            background: rgba(217, 119, 6, 0.1);
+            color: #d97706;
+        }
+        
+        .status-planning {
+            background: rgba(37, 99, 235, 0.1);
+            color: #2563eb;
+        }
+        
+        /* Project links styles */
+        .project-links {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+        
+        .project-link {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .project-link.code {
+            background: rgba(37, 99, 235, 0.08);
+            color: var(--primary);
+            border: 1px solid rgba(37, 99, 235, 0.15);
+        }
+        
+        .project-link.code:hover {
+            background: rgba(37, 99, 235, 0.12);
+            transform: translateY(-2px);
+        }
+        
+        .project-link.demo {
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            color: white;
+        }
+        
+        .project-link.demo:hover {
+            background: linear-gradient(to right, var(--primary-light), var(--secondary));
+            transform: translateY(-2px);
+        }
+        
+        .project-link i {
+            margin-right: 0.5rem;
+        }
+        
+        /* Skills in Action section styles */
+        .skill-application {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        
+        .skill-application:hover {
+            border-color: var(--primary-light);
+            transform: translateX(5px);
+        }
+        
+        .skill-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 0.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .skill-details {
+            flex: 1;
+        }
+        
+        .skill-name {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.25rem;
+        }
+        
+        .skill-usage {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        
+        /* Skills showcase grid */
+        .skills-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar"></div>
+    <div class="theme-toggle">
+        <i class="fas fa-moon"></i>
+    </div>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // Toast notification component
+        function Toast({ message, type, show, onClose }) {
+            React.useEffect(() => {
+                if (show) {
+                    const timer = setTimeout(() => {
+                        onClose();
+                    }, 5000);
+                    
+                    return () => clearTimeout(timer);
+                }
+            }, [show, onClose]);
+            
+            if (!show) return null;
+            
+            return (
+                <div className={`toast ${type} ${show ? 'show' : ''}`}>
+                    {message}
+                </div>
+            );
+        }
+
+        // NavigationBar Component
+        function NavigationBar({ activeSection }) {
+            const scrollToSection = (sectionId) => {
+                const element = document.getElementById(sectionId);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
+            };
+
+            const navItems = [
+                { id: 'hero', label: 'Home' },
+                { id: 'about', label: 'About' },
+                { id: 'skills', label: 'Skills' },
+                { id: 'projects', label: 'Projects' },
+                { id: 'learning', label: 'Learning Path' },
+                { id: 'contact', label: 'Contact' }
+            ];
+
+            return (
+                <nav className="fixed top-0 left-0 right-0 z-50 bg-white bg-opacity-95 backdrop-blur-md border-b border-gray-200 dark:bg-slate-900 dark:bg-opacity-95 dark:border-slate-800">
+                    <div className="max-w-6xl mx-auto px-6 py-4">
+                        <div className="flex items-center justify-between">
+                            <div className="font-bold text-xl text-slate-800 dark:text-white">
+                                Matthew Lawrence L
+                            </div>
+                            
+                            <div className="hidden md:flex items-center space-x-8">
+                                {navItems.map((item) => (
+                                    <button
+                                        key={item.id}
+                                        onClick={() => scrollToSection(item.id)}
+                                        className={`nav-link px-3 py-2 ${activeSection === item.id ? 'active' : ''}`}
+                                    >
+                                        {item.label}
+                                    </button>
+                                ))}
+                            </div>
+
+                            <button 
+                                className="btn-primary"
+                                onClick={() => scrollToSection('contact')}
+                            >
+                                Get In Touch
+                            </button>
+                        </div>
+                    </div>
+                </nav>
+            );
+        }
+
+        // HeroSection Component
+        function HeroSection() {
+            const [displayText, setDisplayText] = React.useState('');
+            const [currentIndex, setCurrentIndex] = React.useState(0);
+            const fullText = "Building Scalable Data Infrastructure";
+            
+            const scrollToSection = (sectionId) => {
+                const element = document.getElementById(sectionId);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
+            };
+
+            React.useEffect(() => {
+                if (currentIndex < fullText.length) {
+                    const timeout = setTimeout(() => {
+                        setDisplayText(fullText.substring(0, currentIndex + 1));
+                        setCurrentIndex(currentIndex + 1);
+                    }, 100);
+                    
+                    return () => clearTimeout(timeout);
+                }
+            }, [currentIndex, fullText]);
+
+            return (
+                <section id="hero">
+                    {/* Animated Background Elements */}
+                    <div className="floating-shape floating-shape-1"></div>
+                    <div className="floating-shape floating-shape-2"></div>
+                    <div className="floating-shape floating-shape-3"></div>
+
+                    <div className="max-w-6xl mx-auto px-6 text-center relative z-10">
+                        <div className="space-y-8">
+                            <div className="space-y-6">
+                                <h1 className="text-4xl md:text-6xl font-bold text-slate-800 dark:text-white leading-tight">
+                                    Matthew <span className="gradient-text">Lawrence L</span>
+                                </h1>
+                                
+                                <div className="h-12">
+                                    <p className="text-xl md:text-2xl text-slate-600 dark:text-slate-300 font-light max-w-4xl mx-auto typewriter">
+                                        {displayText}
+                                    </p>
+                                </div>
+                                
+                                <p className="text-lg text-slate-500 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                                    Data Engineer specializing in building robust data pipelines, scalable data architectures, and transforming raw data into actionable insights that drive business decisions.
+                                </p>
+                            </div>
+
+                            <div className="data-pipeline">
+                                <div className="data-node"><i className="fas fa-database"></i></div>
+                                <div className="data-node"><i className="fas fa-code"></i></div>
+                                <div className="data-node"><i className="fas fa-chart-line"></i></div>
+                                <div className="data-node"><i className="fas fa-cloud"></i></div>
+                                <div className="data-node"><i className="fas fa-brain"></i></div>
+                            </div>
+
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                                <button className="btn-primary">
+                                    <i className="fas fa-download mr-2"></i>
+                                    Download Resume
+                                </button>
+                                
+                                <button 
+                                    className="btn-outline"
+                                    onClick={() => scrollToSection('projects')}
+                                >
+                                    <i className="fas fa-code mr-2"></i>
+                                    View Projects
+                                </button>
+                            </div>
+
+                            <div className="pt-16 animate-bounce">
+                                <button 
+                                    onClick={() => scrollToSection('about')}
+                                    className="text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors duration-300 text-2xl"
+                                >
+                                    <i className="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // AboutSection Component
+        function AboutSection() {
+            const highlights = [
+                {
+                    title: "Data Pipeline Development",
+                    description: "Building efficient ETL/ELT pipelines to process and transform data at scale.",
+                    icon: "fas fa-stream"
+                },
+                {
+                    title: "Cloud Data Solutions",
+                    description: "Designing and implementing data architectures on cloud platforms like AWS, GCP, and Azure.",
+                    icon: "fas fa-cloud"
+                },
+                {
+                    title: "Data Visualization",
+                    description: "Creating insightful dashboards and reports to communicate data-driven insights.",
+                    icon: "fas fa-chart-bar"
+                }
+            ];
+
+            return (
+                <section id="about" className="bg-section">
+                    <div className="max-w-6xl mx-auto px-6">
+                        <div className="text-center mb-16 fade-in">
+                            <h2 className="section-title text-slate-800 dark:text-white">
+                                About <span className="gradient-text">Me</span>
+                            </h2>
+                            <div className="title-underline"></div>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
+                            <div className="space-y-6 fade-in">
+                                <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+                                    I'm a passionate <strong className="text-slate-800 dark:text-white">Data Engineer</strong> with a strong foundation in data processing, cloud technologies, and software development. My journey in data began with curiosity about how data can transform businesses and create value.
+                                </p>
+                                <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+                                    I specialize in modern data stack technologies including Apache Spark, Airflow, dbt, and cloud data warehouses. My goal is to design and implement data solutions that are scalable, reliable, and efficient.
+                                </p>
+                                <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+                                    When I'm not coding, you'll find me exploring new data engineering tools, contributing to open-source projects, or diving deep into system design concepts for distributed data processing.
+                                </p>
+                            </div>
+
+                            <div className="relative fade-in">
+                                <div className="card p-8">
+                                    <div className="grid grid-cols-2 gap-6 text-center">
+                                        <div>
+                                            <div className="stat-number text-blue-500">10+</div>
+                                            <div className="stat-label">Projects Completed</div>
+                                        </div>
+                                        <div>
+                                            <div className="stat-number text-purple-500">15+</div>
+                                            <div className="stat-label">Technologies</div>
+                                        </div>
+                                        <div>
+                                            <div className="stat-number text-cyan-500">100%</div>
+                                            <div className="stat-label">Learning Focus</div>
+                                        </div>
+                                        <div>
+                                            <div className="stat-number text-amber-500">5+</div>
+                                            <div className="stat-label">Certifications</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Professional Journey Section */}
+                        <div className="professional-section fade-in">
+                            <div className="professional-content">
+                                <h3 className="text-2xl font-bold text-slate-800 dark:text-white mb-6 text-center">
+                                    Professional Journey
+                                </h3>
+                                
+                                <div className="grid md:grid-cols-2 gap-6 mb-8">
+                                    <div className="highlight-card">
+                                        <div className="flex items-center mb-3">
+                                            <i className="fas fa-bullseye text-blue-500 text-xl mr-3"></i>
+                                            <h4 className="text-lg font-semibold">Career Focus</h4>
+                                        </div>
+                                        <p className="text-slate-600 dark:text-slate-300">
+                                            Building scalable data infrastructure and pipelines that enable data-driven decision making across organizations.
+                                        </p>
+                                    </div>
+                                    
+                                    <div className="highlight-card">
+                                        <div className="flex items-center mb-3">
+                                            <i className="fas fa-graduation-cap text-green-500 text-xl mr-3"></i>
+                                            <h4 className="text-lg font-semibold">Current Focus</h4>
+                                        </div>
+                                        <p className="text-slate-600 dark:text-slate-300">
+                                            Advancing expertise in cloud data technologies, distributed systems, and end-to-end data project implementation.
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <div className="journey-steps">
+                                    <div className="journey-step">
+                                        <div className="step-icon">1</div>
+                                        <div className="step-content">
+                                            <h4 className="step-title">Foundation Building</h4>
+                                            <p className="step-description">
+                                                Mastered core data engineering concepts including SQL, Python, data modeling, and ETL processes through hands-on projects and coursework.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="journey-step">
+                                        <div className="step-icon">2</div>
+                                        <div className="step-content">
+                                            <h4 className="step-title">Cloud & Big Data Technologies</h4>
+                                            <p className="step-description">
+                                                Developed expertise in AWS, Google Cloud, Apache Spark, and distributed computing frameworks through practical implementations.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="journey-step">
+                                        <div className="step-icon">3</div>
+                                        <div className="step-content">
+                                            <h4 className="step-title">Portfolio Development</h4>
+                                            <p className="step-description">
+                                                Built a comprehensive portfolio of data engineering projects that demonstrate real-world problem-solving abilities.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="journey-step">
+                                        <div className="step-icon">4</div>
+                                        <div className="step-content">
+                                            <h4 className="step-title">Professional Growth</h4>
+                                            <p className="step-description">
+                                                Continuously expanding skills and knowledge to stay current with evolving data technologies and industry best practices.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="grid md:grid-cols-3 gap-8">
+                            {highlights.map((highlight, index) => (
+                                <div key={index} className="card p-6 text-center group fade-in">
+                                    <div className="w-16 h-16 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-500/20 dark:to-purple-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                                        <i className={`${highlight.icon} text-blue-500 text-xl`}></i>
+                                    </div>
+                                    <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-3">{highlight.title}</h3>
+                                    <p className="text-slate-500 dark:text-slate-400 leading-relaxed">{highlight.description}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // SkillsSection Component
+        function SkillsSection() {
+            const skillCategories = [
+                {
+                    title: "Data Engineering",
+                    icon: "fas fa-database",
+                    skills: ["SQL", "Python", "Apache Spark", "ETL/ELT", "Data Warehousing", "Data Modeling", "Apache Airflow", "dbt"]
+                },
+                {
+                    title: "Cloud Platforms",
+                    icon: "fas fa-cloud",
+                    skills: ["AWS", "Google Cloud", "Azure", "Snowflake", "BigQuery", "Redshift", "S3", "Databricks"]
+                },
+                {
+                    title: "Data Processing",
+                    icon: "fas fa-stream",
+                    skills: ["Pandas", "PySpark", "NumPy", "Apache Kafka", "Data Pipelines", "Batch Processing", "Stream Processing"]
+                },
+                {
+                    title: "Tools & Technologies",
+                    icon: "fas fa-tools",
+                    skills: ["Git", "Docker", "Kubernetes", "Linux", "Jupyter", "Tableau", "Power BI", "REST APIs"]
+                }
+            ];
+
+            const skillsInAction = [
+                {
+                    skill: "Python & PySpark",
+                    usage: "Data transformation, ETL pipelines, and analytics workflows",
+                    icon: "fas fa-code"
+                },
+                {
+                    skill: "SQL & Data Modeling",
+                    usage: "Database design, query optimization, and data architecture",
+                    icon: "fas fa-database"
+                },
+                {
+                    skill: "AWS Cloud Services",
+                    usage: "Deploying scalable data solutions on cloud infrastructure",
+                    icon: "fab fa-aws"
+                },
+                {
+                    skill: "Apache Airflow",
+                    usage: "Orchestrating complex data workflows and pipelines",
+                    icon: "fas fa-tasks"
+                },
+                {
+                    skill: "Data Visualization",
+                    usage: "Creating dashboards and reports for business insights",
+                    icon: "fas fa-chart-bar"
+                },
+                {
+                    skill: "Containerization",
+                    usage: "Docker for reproducible data environments",
+                    icon: "fab fa-docker"
+                }
+            ];
+
+            return (
+                <section id="skills">
+                    <div className="max-w-6xl mx-auto px-6">
+                        <div className="text-center mb-16 fade-in">
+                            <h2 className="section-title text-slate-800 dark:text-white">
+                                Technical <span className="gradient-text">Skills</span>
+                            </h2>
+                            <div className="title-underline"></div>
+                            <p className="text-xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto">
+                                Expertise across the modern data stack - from data ingestion and transformation to visualization and deployment.
+                            </p>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 gap-8 mb-16">
+                            {skillCategories.map((category, index) => (
+                                <div key={index} className="card p-8 group fade-in">
+                                    <div className="flex items-center mb-6">
+                                        <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
+                                            <i className={`${category.icon} text-white text-lg`}></i>
+                                        </div>
+                                        <h3 className="text-2xl font-bold text-slate-800 dark:text-white">{category.title}</h3>
+                                    </div>
+                                    
+                                    <div className="flex flex-wrap gap-3">
+                                        {category.skills.map((skill, skillIndex) => (
+                                            <span key={skillIndex} className="skill-badge">
+                                                {skill}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Skills in Action Section */}
+                        <div className="fade-in">
+                            <h3 className="text-2xl font-bold text-slate-800 dark:text-white mb-8 text-center">
+                                Skills in Action
+                            </h3>
+                            <div className="skills-showcase">
+                                {skillsInAction.map((item, index) => (
+                                    <div key={index} className="skill-application">
+                                        <div className="skill-icon">
+                                            <i className={item.icon}></i>
+                                        </div>
+                                        <div className="skill-details">
+                                            <div className="skill-name">{item.skill}</div>
+                                            <div className="skill-usage">{item.usage}</div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // ProjectsSection Component with separate links
+        function ProjectsSection() {
+            const projects = [
+                {
+                    title: "Real-time Data Pipeline",
+                    description: "Built a streaming data pipeline using Apache Kafka and Spark for real-time analytics.",
+                    skills: ["Apache Kafka", "Spark Streaming", "Python", "Docker"],
+                    icon: "fas fa-bolt",
+                    status: "completed",
+                    codeLink: "https://github.com/MatthewLawrencel/real-time-data-pipeline", // Your GitHub link
+                    demoLink: "https://matthew-lawrence-data-pipeline.demo.com" // Your demo link
+                },
+                {
+                    title: "Cloud Data Warehouse",
+                    description: "Designed and implemented a cloud-based data warehouse solution using Snowflake.",
+                    skills: ["Snowflake", "dbt", "SQL", "AWS"],
+                    icon: "fas fa-warehouse",
+                    status: "in-progress",
+                    codeLink: "https://github.com/MatthewLawrencel/cloud-data-warehouse", // Your GitHub link
+                    demoLink: "https://matthew-lawrence-data-warehouse.demo.com" // Your demo link
+                },
+                {
+                    title: "Ecommerce Lakehouse Data Pipeline",
+                    description: "Created an automated ETL pipeline with Apache Airflow.",
+                    skills: ["Apache Airflow", "Python", "Parquet","Analytics"],
+                    icon: "fas fa-tasks",
+                    status: "completed",
+                    codeLink: "https://github.com/MatthewLawrencel/Ecommerce-Lakehouse", // Your GitHub link
+                    demoLink: "https://matthew-lawrence-lakehouse.demo.com" // Your demo link
+                },
+                {
+                    title: "Data Lake Architecture",
+                    description: "Implemented a data lake on AWS S3 with structured and unstructured data.",
+                    skills: ["AWS S3", "Glue", "Athena", "PySpark"],
+                    icon: "fas fa-layer-group",
+                    status: "planning",
+                    codeLink: "https://github.com/MatthewLawrencel/data-lake-architecture", // Your GitHub link
+                    demoLink: "https://matthew-lawrence-data-lake.demo.com" // Your demo link
+                },
+                {
+                    title: "Dashboard & Visualization",
+                    description: "Developed interactive dashboards for business intelligence reporting.",
+                    skills: ["Tableau", "SQL", "Data Modeling", "UI/UX"],
+                    icon: "fas fa-chart-pie",
+                    status: "completed",
+                    codeLink: "https://github.com/MatthewLawrencel/data-visualization", // Your GitHub link
+                    demoLink: "https://matthew-lawrence-dashboard.demo.com" // Your demo link
+                },
+                {
+                    title: "ML Pipeline Automation",
+                    description: "Built an end-to-end machine learning pipeline for model training and deployment.",
+                    skills: ["MLflow", "Scikit-learn", "FastAPI", "Docker"],
+                    icon: "fas fa-robot",
+                    status: "in-progress",
+                    codeLink: "https://github.com/MatthewLawrencel/ml-pipeline", // Your GitHub link
+                    demoLink: "https://matthew-lawrence-ml-pipeline.demo.com" // Your demo link
+                }
+            ];
+
+            const getStatusClass = (status) => {
+                switch(status) {
+                    case 'completed': return 'status-completed';
+                    case 'in-progress': return 'status-in-progress';
+                    case 'planning': return 'status-planning';
+                    default: return 'status-planning';
+                }
+            };
+
+            const getStatusText = (status) => {
+                switch(status) {
+                    case 'completed': return 'Completed';
+                    case 'in-progress': return 'In Progress';
+                    case 'planning': return 'Planning';
+                    default: return 'Planning';
+                }
+            };
+
+            return (
+                <section id="projects" className="bg-section">
+                    <div className="max-w-6xl mx-auto px-6">
+                        <div className="text-center mb-16 fade-in">
+                            <h2 className="section-title text-slate-800 dark:text-white">
+                                Data Engineering <span className="gradient-text">Projects</span>
+                            </h2>
+                            <div className="title-underline"></div>
+                            <p className="text-xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto">
+                                Hands-on projects demonstrating practical data engineering skills and problem-solving abilities.
+                            </p>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {projects.map((project, index) => (
+                                <div key={index} className="card overflow-hidden h-full hover:translate-y-2 transition-transform duration-300 fade-in">
+                                    <div className="aspect-video bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 flex items-center justify-center relative">
+                                        <i className={`${project.icon} text-blue-500 text-4xl`}></i>
+                                        <div className={`absolute top-3 right-3 project-status ${getStatusClass(project.status)}`}>
+                                            {getStatusText(project.status)}
+                                        </div>
+                                    </div>
+                                    <div className="p-6">
+                                        <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-3">{project.title}</h3>
+                                        <p className="text-slate-500 dark:text-slate-300 text-sm leading-relaxed mb-4">
+                                            {project.description}
+                                        </p>
+                                        
+                                        <div className="flex flex-wrap gap-2 mb-4">
+                                            {project.skills.slice(0, 3).map((skill, skillIndex) => (
+                                                <span key={skillIndex} className="skill-badge text-xs">
+                                                    {skill}
+                                                </span>
+                                            ))}
+                                            {project.skills.length > 3 && (
+                                                <span className="skill-badge text-xs">
+                                                    +{project.skills.length - 3} more
+                                                </span>
+                                            )}
+                                        </div>
+                                        
+                                        <div className="project-links">
+                                            <a 
+                                                href={project.codeLink} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="project-link code"
+                                            >
+                                                <i className="fab fa-github"></i>
+                                                Code
+                                            </a>
+                                            <a 
+                                                href={project.demoLink} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="project-link demo"
+                                            >
+                                                <i className="fas fa-external-link-alt"></i>
+                                                Demo
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // LearningPathSection Component
+        function LearningPathSection() {
+            const certifications = [
+                { name: "AWS Certified Data Analytics", issuer: "Amazon Web Services", planned: "Q2 2024", icon: "fab fa-aws" },
+                { name: "Google Cloud Data Engineer", issuer: "Google Cloud", planned: "Q3 2024", icon: "fab fa-google" },
+                { name: "Databricks Certified Developer", issuer: "Databricks", planned: "Q4 2024", icon: "fas fa-database" },
+                { name: "Apache Spark Certification", issuer: "Databricks", planned: "Q1 2025", icon: "fas fa-bolt" }
+            ];
+
+            const learningFocus = [
+                {
+                    area: "Advanced Data Engineering",
+                    topics: ["Stream Processing", "Data Mesh Architecture", "Real-time Analytics"],
+                    icon: "fas fa-rocket"
+                },
+                {
+                    area: "Cloud Native Solutions",
+                    topics: ["Serverless Data Pipelines", "Multi-cloud Strategies", "Cost Optimization"],
+                    icon: "fas fa-cloud"
+                },
+                {
+                    area: "DataOps & MLOps",
+                    topics: ["ML Pipeline Automation", "Data Quality Monitoring", "Model Deployment"],
+                    icon: "fas fa-cogs"
+                }
+            ];
+
+            return (
+                <section id="learning" className="bg-section">
+                    <div className="max-w-6xl mx-auto px-6">
+                        <div className="text-center mb-16 fade-in">
+                            <h2 className="section-title text-slate-800 dark:text-white">
+                                Learning <span className="gradient-text">Path</span>
+                            </h2>
+                            <div className="title-underline"></div>
+                            <p className="text-xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto">
+                                My structured approach to mastering data engineering through hands-on projects and continuous learning.
+                            </p>
+                        </div>
+
+                        <div className="grid lg:grid-cols-2 gap-12">
+                            {/* Learning Focus Areas */}
+                            <div>
+                                <h3 className="text-2xl font-bold text-slate-800 dark:text-white mb-8 fade-in">Current Learning Focus</h3>
+                                <div className="space-y-6">
+                                    {learningFocus.map((item, index) => (
+                                        <div key={index} className="card p-6 fade-in">
+                                            <div className="flex items-start gap-4">
+                                                <div className="w-12 h-12 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-500/20 dark:to-purple-500/20 rounded-xl flex items-center justify-center mt-2 flex-shrink-0">
+                                                    <i className={`${item.icon} text-blue-500`}></i>
+                                                </div>
+                                                <div className="flex-1">
+                                                    <h4 className="text-xl font-bold text-slate-800 dark:text-white mb-2">{item.area}</h4>
+                                                    <div className="flex flex-wrap gap-2 mt-3">
+                                                        {item.topics.map((topic, topicIndex) => (
+                                                            <span key={topicIndex} className="skill-badge text-xs">
+                                                                {topic}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Certifications */}
+                            <div>
+                                <h3 className="text-2xl font-bold text-slate-800 dark:text-white mb-8 fade-in">Certification Roadmap</h3>
+                                <div className="space-y-4">
+                                    {certifications.map((cert, index) => (
+                                        <div key={index} className="card p-4 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-300 fade-in">
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-10 h-10 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-500/20 dark:to-purple-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                                    <i className={`${cert.icon} text-blue-500`}></i>
+                                                </div>
+                                                <div className="flex-1">
+                                                    <h4 className="font-semibold text-slate-800 dark:text-white">{cert.name}</h4>
+                                                    <div className="flex justify-between items-center text-sm text-slate-500 dark:text-slate-400">
+                                                        <span>{cert.issuer}</span>
+                                                        <span className="bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 px-2 py-1 rounded-full text-xs">
+                                                            {cert.planned}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className="card p-6 mt-8 fade-in">
+                                    <h4 className="text-lg font-bold text-slate-800 dark:text-white mb-4">Learning Resources</h4>
+                                    <div className="space-y-3">
+                                        <div className="flex items-center gap-3 text-slate-600 dark:text-slate-300">
+                                            <i className="fas fa-book text-blue-500"></i>
+                                            <span>Data Engineering on Google Cloud Platform (Coursera)</span>
+                                        </div>
+                                        <div className="flex items-center gap-3 text-slate-600 dark:text-slate-300">
+                                            <i className="fas fa-book text-blue-500"></i>
+                                            <span>Apache Spark Programming (Udemy)</span>
+                                        </div>
+                                        <div className="flex items-center gap-3 text-slate-600 dark:text-slate-300">
+                                            <i className="fas fa-book text-blue-500"></i>
+                                            <span>Designing Data-Intensive Applications (Book)</span>
+                                        </div>
+                                        <div className="flex items-center gap-3 text-slate-600 dark:text-slate-300">
+                                            <i className="fas fa-book text-blue-500"></i>
+                                            <span>Data Pipelines with Apache Airflow (O'Reilly)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // ContactSection Component with Google Sheets Integration
+        function ContactSection() {
+            const [formData, setFormData] = React.useState({
+                name: '',
+                email: '',
+                subject: '',
+                message: ''
+            });
+            const [isSubmitting, setIsSubmitting] = React.useState(false);
+            const [toast, setToast] = React.useState({
+                show: false,
+                message: '',
+                type: 'success'
+            });
+
+            // IMPORTANT: Replace this URL with your actual Google Apps Script Web App URL
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbwl6jVF-4xiQb6CIQmcUKKiNgVzXyORu_rFnRkftpr3jg-WRU3b-DDhx2AySw3LuMUT/exec';
+
+            const handleChange = (e) => {
+                setFormData({
+                    ...formData,
+                    [e.target.name]: e.target.value
+                });
+            };
+
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                setIsSubmitting(true);
+
+                try {
+                    // Create form data object
+                    const formPayload = new FormData();
+                    formPayload.append('name', formData.name);
+                    formPayload.append('email', formData.email);
+                    formPayload.append('subject', formData.subject);
+                    formPayload.append('message', formData.message);
+
+                    console.log('Sending data to Google Sheets...');
+
+                    // Send POST request to Google Apps Script
+                    const response = await fetch(scriptURL, {
+                        method: 'POST',
+                        body: formPayload
+                    });
+
+                    const result = await response.json();
+                    
+                    if (result.result === "success") {
+                        setToast({
+                            show: true,
+                            message: 'Thank you for your message! I\'ll get back to you soon.',
+                            type: 'success'
+                        });
+                        // Reset form
+                        setFormData({ name: '', email: '', subject: '', message: '' });
+                    } else {
+                        throw new Error(result.error || 'Failed to submit form');
+                    }
+                } catch (error) {
+                    console.error('Error sending message:', error);
+                    setToast({
+                        show: true,
+                        message: 'Sorry, there was an error. Please try again or email me directly at lawrence82773824@gmail.com',
+                        type: 'error'
+                    });
+                } finally {
+                    setIsSubmitting(false);
+                }
+            };
+
+            const closeToast = () => {
+                setToast({ ...toast, show: false });
+            };
+
+            const contactMethods = [
+                {
+                    icon: 'fas fa-envelope',
+                    title: 'Email',
+                    value: 'lawrence82773824@gmail.com',
+                    link: 'mailto:lawrence82773824@gmail.com'
+                },
+                {
+                    icon: 'fas fa-phone',
+                    title: 'Phone',
+                    value: '+91 8277382505',
+                    link: 'tel:+918277382505'
+                },
+                {
+                    icon: 'fas fa-map-marker-alt',
+                    title: 'Location',
+                    value: 'Bengaluru, India',
+                    link: 'https://maps.app.goo.gl/znaqJmwiNRuJ479P8'
+                }
+            ];
+
+            const socialLinks = [
+                { icon: 'fab fa-github', url: 'https://github.com/MatthewLawrencel', color: 'hover:text-gray-800 dark:hover:text-white' },
+                { icon: 'fab fa-linkedin-in', url: 'https://www.linkedin.com/in/matthewlawrencel/', color: 'hover:text-blue-600' },
+                { icon: 'fab fa-kaggle', url: 'https://www.kaggle.com/matthewlawrencel', color: 'hover:text-blue-500' },
+                { icon: 'fab fa-medium', url: 'https://medium.com', color: 'hover:text-gray-600' }
+            ];
+
+            return (
+                <section id="contact" className="bg-section">
+                    <Toast 
+                        message={toast.message} 
+                        type={toast.type} 
+                        show={toast.show} 
+                        onClose={closeToast} 
+                    />
+                    
+                    <div className="max-w-6xl mx-auto px-6">
+                        <div className="text-center mb-16 fade-in">
+                            <h2 className="section-title text-slate-800 dark:text-white">
+                                Get In <span className="gradient-text">Touch</span>
+                            </h2>
+                            <div className="title-underline"></div>
+                            <p className="text-xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto">
+                                Interested in data engineering opportunities or want to discuss a project? I'd love to hear from you.
+                            </p>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 gap-12">
+                            <div className="space-y-8 fade-in">
+                                <div>
+                                    <h3 className="text-2xl font-bold text-slate-800 dark:text-white mb-6">Let's Connect</h3>
+                                    <p className="text-slate-500 dark:text-slate-300 leading-relaxed">
+                                        I'm actively seeking opportunities to apply my data engineering skills and learn from experienced professionals. Whether you have a project in mind, want to discuss data engineering concepts, or have career advice, I'm always open to conversations.
+                                    </p>
+                                </div>
+
+                                <div className="space-y-4">
+                                    {contactMethods.map((method, index) => (
+                                        <a
+                                            key={index}
+                                            href={method.link}
+                                            className="flex items-center gap-4 p-4 rounded-lg hover:bg-white dark:hover:bg-slate-800 transition-colors duration-300 group"
+                                        >
+                                            <div className="w-12 h-12 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-500/20 dark:to-purple-500/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                                <i className={`${method.icon} text-blue-500`}></i>
+                                            </div>
+                                            <div>
+                                                <div className="font-semibold text-slate-800 dark:text-white">{method.title}</div>
+                                                <div className="text-slate-500 dark:text-slate-400">{method.value}</div>
+                                            </div>
+                                        </a>
+                                    ))}
+                                </div>
+
+                                <div className="pt-4">
+                                    <h4 className="text-lg font-semibold text-slate-800 dark:text-white mb-4">Follow my journey</h4>
+                                    <div className="flex gap-3">
+                                        {socialLinks.map((social, index) => (
+                                            <a
+                                                key={index}
+                                                href={social.url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="social-icon"
+                                            >
+                                                <i className={`${social.icon} ${social.color} transition-colors duration-300`}></i>
+                                            </a>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="google-sheets-info">
+                                    <div className="flex items-center mb-2">
+                                        <i className="fas fa-table text-green-500 mr-2"></i>
+                                        <h4 className="font-semibold">Google Sheets Integration</h4>
+                                    </div>
+                                    <p className="text-sm text-slate-600 dark:text-slate-300">
+                                        All contact form submissions are automatically logged to Google Sheets and I receive an email notification for quick follow-up.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className="card p-8 fade-in">
+                                <form onSubmit={handleSubmit} className="space-y-6">
+                                    <div>
+                                        <label htmlFor="name" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                            Full Name *
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="name"
+                                            name="name"
+                                            value={formData.name}
+                                            onChange={handleChange}
+                                            required
+                                            className="w-full px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-slate-800 dark:text-white transition-colors duration-300"
+                                            placeholder="Your name"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label htmlFor="email" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                            Email Address *
+                                        </label>
+                                        <input
+                                            type="email"
+                                            id="email"
+                                            name="email"
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                            required
+                                            className="w-full px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-slate-800 dark:text-white transition-colors duration-300"
+                                            placeholder="your.email@example.com"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label htmlFor="subject" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                            Subject *
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="subject"
+                                            name="subject"
+                                            value={formData.subject}
+                                            onChange={handleChange}
+                                            required
+                                            className="w-full px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-slate-800 dark:text-white transition-colors duration-300"
+                                            placeholder="What is this regarding?"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label htmlFor="message" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                            Message *
+                                        </label>
+                                        <textarea
+                                            id="message"
+                                            name="message"
+                                            value={formData.message}
+                                            onChange={handleChange}
+                                            required
+                                            rows="5"
+                                            className="w-full px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-slate-800 dark:text-white transition-colors duration-300"
+                                            placeholder="Tell me about your project or opportunity..."
+                                        ></textarea>
+                                    </div>
+
+                                    <button 
+                                        type="submit" 
+                                        className="btn-primary w-full flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                                        disabled={isSubmitting}
+                                    >
+                                        {isSubmitting ? (
+                                            <>
+                                                <span className="loading mr-2"></span>
+                                                Sending...
+                                            </>
+                                        ) : (
+                                            'Send Message'
+                                        )}
+                                    </button>
+                                    
+                                    <p className="text-xs text-slate-500 text-center mt-4">
+                                        * Required fields. Data will be stored in Google Sheets.
+                                    </p>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // Footer Component
+        function Footer() {
+            return (
+                <footer className="bg-slate-900 text-white py-12">
+                    <div className="max-w-6xl mx-auto px-6 text-center">
+                        <div className="flex flex-col items-center">
+                            <div className="font-bold text-2xl text-white mb-4">
+                                Matthew Lawrence L
+                            </div>
+                            <p className="text-slate-400 max-w-2xl mx-auto mb-8">
+                                Building scalable data infrastructure and transforming data into actionable insights.
+                            </p>
+                            
+                            <div className="flex gap-4 mb-8">
+                                <a href="https://github.com/MatthewLawrencel" className="text-slate-400 hover:text-white transition-colors duration-300">
+                                    <i className="fab fa-github text-xl"></i>
+                                </a>
+                                <a href="https://www.linkedin.com/in/matthewlawrencel/" className="text-slate-400 hover:text-blue-400 transition-colors duration-300">
+                                    <i className="fab fa-linkedin-in text-xl"></i>
+                                </a>
+                                <a href="https://www.kaggle.com/matthewlawrencel" className="text-slate-400 hover:text-blue-500 transition-colors duration-300">
+                                    <i className="fab fa-kaggle text-xl"></i>
+                                </a>
+                                <a href="#" className="text-slate-400 hover:text-gray-600 transition-colors duration-300">
+                                    <i className="fab fa-medium text-xl"></i>
+                                </a>
+                            </div>
+                            
+                            <div className="border-t border-slate-800 w-full pt-8">
+                                <p className="text-slate-500">
+                                    © {new Date().getFullYear()} Matthew Lawrence L. All rights reserved.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            );
+        }
+
+        // Main App Component
+        function App() {
+            const [activeSection, setActiveSection] = React.useState('hero');
+            const [darkMode, setDarkMode] = React.useState(false);
+
+            React.useEffect(() => {
+                // Check system preference for dark mode
+                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    setDarkMode(true);
+                    document.body.classList.add('dark-mode');
+                }
+
+                // Scroll progress bar
+                const handleScroll = () => {
+                    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                    const scrolled = (winScroll / height) * 100;
+                    document.querySelector('.progress-bar').style.width = scrolled + '%';
+
+                    // Section detection for active navigation
+                    const sections = ['hero', 'about', 'skills', 'projects', 'learning', 'contact'];
+                    const scrollPosition = window.scrollY + 100;
+
+                    for (const section of sections) {
+                        const element = document.getElementById(section);
+                        if (element) {
+                            const offsetTop = element.offsetTop;
+                            const offsetHeight = element.offsetHeight;
+
+                            if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+                                setActiveSection(section);
+                                break;
+                            }
+                        }
+                    }
+                };
+
+                // Intersection Observer for fade-in animations
+                const observerOptions = {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -50px 0px'
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                        }
+                    });
+                }, observerOptions);
+
+                // Observe all elements with fade-in class
+                document.querySelectorAll('.fade-in').forEach(element => {
+                    observer.observe(element);
+                });
+
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            const toggleDarkMode = () => {
+                setDarkMode(!darkMode);
+                document.body.classList.toggle('dark-mode');
+                const icon = document.querySelector('.theme-toggle i');
+                icon.classList.toggle('fa-moon');
+                icon.classList.toggle('fa-sun');
+            };
+
+            return (
+                <div className="bg-white dark:bg-slate-900 transition-colors duration-300">
+                    <NavigationBar activeSection={activeSection} />
+                    <HeroSection />
+                    <AboutSection />
+                    <SkillsSection />
+                    <ProjectsSection />
+                    <LearningPathSection />
+                    <ContactSection />
+                    <Footer />
+                    
+                    <div className="theme-toggle" onClick={toggleDarkMode}>
+                        <i className="fas fa-moon"></i>
+                    </div>
+                </div>
+            );
+        }
+
+        // Render the App
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
