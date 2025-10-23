@@ -5,9 +5,9 @@ This site showcases my projects, technical skills, and learning journey.
 ---
 
 ## 📬 Contact
-- **Portfolio:** [https://matthewlawrence.github.io](https://matthewlawrence.github.io)
+- **Portfolio:** [https://matthewlawrencel.github.io](https://matthewlawrencel.github.io)
 - **LinkedIn:** [https://linkedin.com/in/matthewlawrence](https://linkedin.com/in/matthewlawrence)
-- **GitHub:** [https://github.com/matthewlawrence](https://github.com/matthewlawrence)
+- **GitHub:** [https://github.com/matthewlawrencel](https://github.com/matthewlawrencel)
 
 ---
 
