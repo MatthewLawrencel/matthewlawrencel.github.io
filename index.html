@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Matthew Lawrence L | Data Engineering Portfolio</title>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -37,7 +38,7 @@
         body.dark-mode {
             --light-bg: #0f172a;
             --card-bg: #1e293b;
-            --text: #f1f5f9;
+            --text: #f8fafc;
             --text-light: #cbd5e1;
             --border: #334155;
         }
@@ -45,14 +46,67 @@
         /* Improved dark mode text visibility */
         body.dark-mode .text-slate-500,
         body.dark-mode .text-slate-400,
-        body.dark-mode .text-slate-600 {
-            color: var(--text-light) !important;
+        body.dark-mode .text-slate-600,
+        body.dark-mode .text-slate-300 {
+            color: #e2e8f0 !important;
         }
         
         body.dark-mode .text-slate-800,
         body.dark-mode .text-slate-700,
         body.dark-mode .text-slate-900 {
-            color: var(--text) !important;
+            color: #f8fafc !important;
+        }
+        
+        /* Ensure all text is visible in dark mode */
+        body.dark-mode p,
+        body.dark-mode span,
+        body.dark-mode div,
+        body.dark-mode h1,
+        body.dark-mode h2,
+        body.dark-mode h3,
+        body.dark-mode h4,
+        body.dark-mode h5,
+        body.dark-mode h6,
+        body.dark-mode li,
+        body.dark-mode a:not(.btn-primary):not(.project-link.demo) {
+            color: #f1f5f9 !important;
+        }
+        
+        body.dark-mode .step-description,
+        body.dark-mode .skill-usage,
+        body.dark-mode .stat-label {
+            color: #cbd5e1 !important;
+        }
+        
+        /* Fix specific sections */
+        body.dark-mode .professional-section,
+        body.dark-mode .bg-section {
+            background: rgba(15, 23, 42, 0.8) !important;
+        }
+        
+        body.dark-mode .highlight-card {
+            background: #1e293b !important;
+            border-left: 4px solid var(--primary);
+        }
+        
+        body.dark-mode .card {
+            background: #1e293b;
+            border-color: #334155;
+        }
+        
+        body.dark-mode .skill-badge {
+            background: rgba(37, 99, 235, 0.15);
+            color: #93c5fd;
+            border-color: rgba(37, 99, 235, 0.3);
+        }
+        
+        body.dark-mode .btn-outline {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        body.dark-mode .btn-outline:hover {
+            background: rgba(37, 99, 235, 0.1);
         }
         
         /* Custom scrollbar */
@@ -1198,7 +1252,7 @@
                     skills: ["Apache Airflow", "Python", "Parquet","Analytics"],
                     icon: "fas fa-tasks",
                     status: "completed",
-                    codeLink: "https://github.com/MatthewLawrencel/Ecommerce-Lakehouse", // Your GitHub link
+                    codeLink: "https://github.com/MatthewLawrencel/ecommerce-lakehouse", // Your GitHub link
                     demoLink: "https://matthew-lawrence-lakehouse.demo.com" // Your demo link
                 },
                 {
