@@ -325,7 +325,13 @@
         }
         
         section {
-            padding: 5rem 1.5rem;
+            padding: 3rem 1rem;
+        }
+        
+        @media (min-width: 768px) {
+            section {
+                padding: 5rem 1.5rem;
+            }
         }
         
         #hero {
@@ -560,10 +566,16 @@
         .professional-section {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             border-radius: 1rem;
-            padding: 3rem 2rem;
+            padding: 2rem 1rem;
             margin: 2rem 0;
             position: relative;
             overflow: hidden;
+        }
+        
+        @media (min-width: 768px) {
+            .professional-section {
+                padding: 3rem 2rem;
+            }
         }
         
         body.light-mode .professional-section {
@@ -818,19 +830,38 @@
         
         .skills-showcase {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: 1fr;
             gap: 1.5rem;
+        }
+        
+        @media (min-width: 768px) {
+            .skills-showcase {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .skills-showcase {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
 
         .profile-image-container {
-            width: 300px;
-            height: 300px;
+            width: 200px;
+            height: 200px;
             margin: 0 auto 2rem;
             border-radius: 50%;
             overflow: hidden;
             border: 4px solid var(--primary);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             position: relative;
+        }
+        
+        @media (min-width: 768px) {
+            .profile-image-container {
+                width: 300px;
+                height: 300px;
+            }
         }
         
         .profile-image {
@@ -1037,6 +1068,174 @@
         .light-mode .bg-gradient-to-r.from-blue-100.to-purple-100 {
             background: linear-gradient(to right, rgba(37, 99, 235, 0.05), rgba(168, 85, 247, 0.05)) !important;
         }
+        
+        /* Mobile Navigation */
+        .mobile-menu-button {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--light-bg);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .mobile-nav.open {
+            transform: translateX(0);
+        }
+        
+        .mobile-nav-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .mobile-nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            text-align: center;
+        }
+        
+        .mobile-nav-link {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .mobile-nav-link:hover,
+        .mobile-nav-link.active {
+            color: var(--primary);
+        }
+        
+        @media (max-width: 767px) {
+            .mobile-menu-button {
+                display: block;
+            }
+            
+            .desktop-nav {
+                display: none;
+            }
+            
+            .section-title {
+                font-size: 1.75rem;
+            }
+            
+            .profile-image-container {
+                width: 180px;
+                height: 180px;
+            }
+            
+            .data-pipeline {
+                height: 60px;
+            }
+            
+            .data-node {
+                width: 28px;
+                height: 28px;
+                font-size: 12px;
+            }
+            
+            .journey-step {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .step-icon {
+                margin-bottom: 1rem;
+                margin-right: 0;
+            }
+            
+            .journey-step:not(:last-child)::after {
+                left: 1.5rem;
+                top: 3rem;
+                bottom: -2rem;
+            }
+            
+            .project-links {
+                flex-direction: column;
+            }
+            
+            .skill-application {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .skill-icon {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+            
+            .floating-shape {
+                display: none;
+            }
+            
+            .toast {
+                left: 1rem;
+                right: 1rem;
+                top: 5rem;
+                transform: translateY(-150%);
+            }
+            
+            .toast.show {
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .profile-image-container {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .btn-primary,
+            .btn-outline {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+            
+            .card {
+                padding: 1rem;
+            }
+            
+            .professional-section {
+                padding: 1.5rem 1rem;
+            }
+            
+            .highlight-card {
+                padding: 1rem;
+            }
+            
+            .stat-number {
+                font-size: 2rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1067,7 +1266,53 @@
             );
         }
 
+        function MobileNavigation({ activeSection, isOpen, onClose }) {
+            const scrollToSection = (sectionId) => {
+                const element = document.getElementById(sectionId);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
+                onClose();
+            };
+
+            const navItems = [
+                { id: 'hero', label: 'Home' },
+                { id: 'about', label: 'About' },
+                { id: 'skills', label: 'Skills' },
+                { id: 'projects', label: 'Projects' },
+                { id: 'certifications', label: 'Certifications' },
+                { id: 'contact', label: 'Contact' }
+            ];
+
+            return (
+                <div className={`mobile-nav ${isOpen ? 'open' : ''}`}>
+                    <button className="mobile-nav-close" onClick={onClose}>
+                        <i className="fas fa-times"></i>
+                    </button>
+                    <div className="mobile-nav-links">
+                        {navItems.map((item) => (
+                            <button
+                                key={item.id}
+                                onClick={() => scrollToSection(item.id)}
+                                className={`mobile-nav-link ${activeSection === item.id ? 'active' : ''}`}
+                            >
+                                {item.label}
+                            </button>
+                        ))}
+                        <button 
+                            className="btn-primary mt-4"
+                            onClick={() => scrollToSection('contact')}
+                        >
+                            Get In Touch
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
         function NavigationBar({ activeSection }) {
+            const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+            
             const scrollToSection = (sectionId) => {
                 const element = document.getElementById(sectionId);
                 if (element) {
@@ -1085,34 +1330,51 @@
             ];
 
             return (
-                <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-900 bg-opacity-95 backdrop-blur-md border-b border-slate-800 light:bg-white light:bg-opacity-95 light:border-gray-200">
-                    <div className="max-w-6xl mx-auto px-6 py-4">
-                        <div className="flex items-center justify-between">
-                            <div className="font-bold text-xl text-white light:text-slate-800">
-                                Matthew Lawrence L
-                            </div>
-                            
-                            <div className="hidden md:flex items-center space-x-8">
-                                {navItems.map((item) => (
-                                    <button
-                                        key={item.id}
-                                        onClick={() => scrollToSection(item.id)}
-                                        className={`nav-link px-3 py-2 ${activeSection === item.id ? 'active' : ''}`}
-                                    >
-                                        {item.label}
-                                    </button>
-                                ))}
-                            </div>
+                <>
+                    <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-900 bg-opacity-95 backdrop-blur-md border-b border-slate-800 light:bg-white light:bg-opacity-95 light:border-gray-200">
+                        <div className="max-w-6xl mx-auto px-4 py-4 sm:px-6">
+                            <div className="flex items-center justify-between">
+                                <div className="font-bold text-xl text-white light:text-slate-800">
+                                    Matthew Lawrence L
+                                </div>
+                                
+                                <div className="desktop-nav hidden md:flex items-center space-x-8">
+                                    {navItems.map((item) => (
+                                        <button
+                                            key={item.id}
+                                            onClick={() => scrollToSection(item.id)}
+                                            className={`nav-link px-3 py-2 ${activeSection === item.id ? 'active' : ''}`}
+                                        >
+                                            {item.label}
+                                        </button>
+                                    ))}
+                                </div>
 
-                            <button 
-                                className="btn-primary"
-                                onClick={() => scrollToSection('contact')}
-                            >
-                                Get In Touch
-                            </button>
+                                <div className="flex items-center gap-4">
+                                    <button 
+                                        className="btn-primary hidden md:block"
+                                        onClick={() => scrollToSection('contact')}
+                                    >
+                                        Get In Touch
+                                    </button>
+                                    
+                                    <button 
+                                        className="mobile-menu-button"
+                                        onClick={() => setIsMobileMenuOpen(true)}
+                                    >
+                                        <i className="fas fa-bars"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </nav>
+                    </nav>
+                    
+                    <MobileNavigation 
+                        activeSection={activeSection} 
+                        isOpen={isMobileMenuOpen} 
+                        onClose={() => setIsMobileMenuOpen(false)} 
+                    />
+                </>
             );
         }
 
@@ -1145,7 +1407,7 @@
                     <div className="floating-shape floating-shape-2"></div>
                     <div className="floating-shape floating-shape-3"></div>
 
-                    <div className="max-w-6xl mx-auto px-6 text-center relative z-10">
+                    <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center relative z-10">
                         <div className="space-y-8">
                             <div className="profile-image-container fade-in">
                                 <img 
@@ -1163,17 +1425,17 @@
                             </div>
                             
                             <div className="space-y-6">
-                                <h1 className="text-4xl md:text-6xl font-bold text-white light:text-slate-800 leading-tight">
+                                <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-white light:text-slate-800 leading-tight">
                                     Matthew <span className="gradient-text">Lawrence L</span>
                                 </h1>
                                 
                                 <div className="h-12">
-                                    <p className="text-xl md:text-2xl text-slate-300 light:text-slate-600 font-light max-w-4xl mx-auto typewriter">
+                                    <p className="text-lg sm:text-xl md:text-2xl text-slate-300 light:text-slate-600 font-light max-w-4xl mx-auto typewriter">
                                         {displayText}
                                     </p>
                                 </div>
                                 
-                                <p className="text-lg text-slate-400 light:text-slate-500 max-w-2xl mx-auto leading-relaxed">
+                                <p className="text-base sm:text-lg text-slate-400 light:text-slate-500 max-w-2xl mx-auto leading-relaxed">
                                     Data Engineer specializing in building robust data pipelines, scalable data architectures, and transforming raw data into actionable insights that drive business decisions.
                                 </p>
                             </div>
@@ -1236,7 +1498,7 @@
 
             return (
                 <section id="about" className="bg-section">
-                    <div className="max-w-6xl mx-auto px-6">
+                    <div className="max-w-6xl mx-auto px-4 sm:px-6">
                         <div className="text-center mb-16 fade-in">
                             <h2 className="section-title text-white light:text-slate-800">
                                 About <span className="gradient-text">Me</span>
@@ -1244,22 +1506,22 @@
                             <div className="title-underline"></div>
                         </div>
 
-                        <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
+                        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center mb-16">
                             <div className="space-y-6 fade-in">
-                                <p className="text-lg text-slate-300 light:text-slate-600 leading-relaxed">
+                                <p className="text-base sm:text-lg text-slate-300 light:text-slate-600 leading-relaxed">
                                     I'm a passionate <strong className="text-white light:text-slate-800">Data Engineer</strong> with a strong foundation in data processing, cloud technologies, and software development. My journey in data began with curiosity about how data can transform businesses and create value.
                                 </p>
-                                <p className="text-lg text-slate-300 light:text-slate-600 leading-relaxed">
+                                <p className="text-base sm:text-lg text-slate-300 light:text-slate-600 leading-relaxed">
                                     I specialize in modern data stack technologies including Apache Spark, Airflow, dbt, and cloud data warehouses. My goal is to design and implement data solutions that are scalable, reliable, and efficient.
                                 </p>
-                                <p className="text-lg text-slate-300 light:text-slate-600 leading-relaxed">
+                                <p className="text-base sm:text-lg text-slate-300 light:text-slate-600 leading-relaxed">
                                     I love problem-solving and tackling complex data challenges. Whether it's optimizing a data pipeline or designing a new data model, I'm always up for the task.
                                 </p>
                             </div>
 
                             <div className="relative fade-in">
-                                <div className="card p-8">
-                                    <div className="grid grid-cols-2 gap-6 text-center">
+                                <div className="card p-6 sm:p-8">
+                                    <div className="grid grid-cols-2 gap-4 sm:gap-6 text-center">
                                         <div>
                                             <div className="stat-number text-blue-400 light:text-blue-500">10+</div>
                                             <div className="stat-label">Projects Completed</div>
@@ -1283,11 +1545,11 @@
 
                         <div className="professional-section fade-in">
                             <div className="professional-content">
-                                <h3 className="text-2xl font-bold text-white light:text-slate-800 mb-6 text-center">
+                                <h3 className="text-xl sm:text-2xl font-bold text-white light:text-slate-800 mb-6 text-center">
                                     Professional Journey
                                 </h3>
                                 
-                                <div className="grid md:grid-cols-2 gap-6 mb-8">
+                                <div className="grid md:grid-cols-2 gap-4 sm:gap-6 mb-8">
                                     <div className="highlight-card">
                                         <div className="flex items-center mb-3">
                                             <i className="fas fa-bullseye text-blue-400 light:text-blue-500 text-xl mr-3"></i>
@@ -1353,14 +1615,14 @@
                             </div>
                         </div>
 
-                        <div className="grid md:grid-cols-3 gap-8">
+                        <div className="grid md:grid-cols-3 gap-6 sm:gap-8">
                             {highlights.map((highlight, index) => (
-                                <div key={index} className="card p-6 text-center group fade-in">
-                                    <div className="w-16 h-16 bg-gradient-to-r from-blue-500/20 to-purple-500/20 light:from-blue-100 light:to-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                                        <i className={`${highlight.icon} text-blue-400 light:text-blue-500 text-xl`}></i>
+                                <div key={index} className="card p-4 sm:p-6 text-center group fade-in">
+                                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-blue-500/20 to-purple-500/20 light:from-blue-100 light:to-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                                        <i className={`${highlight.icon} text-blue-400 light:text-blue-500 text-lg sm:text-xl`}></i>
                                     </div>
-                                    <h3 className="text-xl font-semibold text-white light:text-slate-800 mb-3">{highlight.title}</h3>
-                                    <p className="text-slate-400 light:text-slate-500 leading-relaxed">{highlight.description}</p>
+                                    <h3 className="text-lg sm:text-xl font-semibold text-white light:text-slate-800 mb-3">{highlight.title}</h3>
+                                    <p className="text-slate-400 light:text-slate-500 leading-relaxed text-sm sm:text-base">{highlight.description}</p>
                                 </div>
                             ))}
                         </div>
@@ -1428,30 +1690,30 @@
 
             return (
                 <section id="skills">
-                    <div className="max-w-6xl mx-auto px-6">
+                    <div className="max-w-6xl mx-auto px-4 sm:px-6">
                         <div className="text-center mb-16 fade-in">
                             <h2 className="section-title text-white light:text-slate-800">
                                 Technical <span className="gradient-text">Skills</span>
                             </h2>
                             <div className="title-underline"></div>
-                            <p className="text-xl text-slate-400 light:text-slate-500 max-w-3xl mx-auto">
+                            <p className="text-lg sm:text-xl text-slate-400 light:text-slate-500 max-w-3xl mx-auto">
                                 Expertise across the modern data stack - from data ingestion and transformation to visualization and deployment.
                             </p>
                         </div>
 
-                        <div className="grid md:grid-cols-2 gap-8 mb-16">
+                        <div className="grid md:grid-cols-2 gap-6 sm:gap-8 mb-16">
                             {skillCategories.map((category, index) => (
-                                <div key={index} className="card p-8 group fade-in">
+                                <div key={index} className="card p-6 sm:p-8 group fade-in">
                                     <div className="flex items-center mb-6">
-                                        <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
-                                            <i className={`${category.icon} text-white text-lg`}></i>
+                                        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mr-3 sm:mr-4 group-hover:scale-110 transition-transform duration-300">
+                                            <i className={`${category.icon} text-white text-base sm:text-lg`}></i>
                                         </div>
-                                        <h3 className="text-2xl font-bold text-white light:text-slate-800">{category.title}</h3>
+                                        <h3 className="text-xl sm:text-2xl font-bold text-white light:text-slate-800">{category.title}</h3>
                                     </div>
                                     
-                                    <div className="flex flex-wrap gap-3">
+                                    <div className="flex flex-wrap gap-2 sm:gap-3">
                                         {category.skills.map((skill, skillIndex) => (
-                                            <span key={skillIndex} className="skill-badge">
+                                            <span key={skillIndex} className="skill-badge text-xs sm:text-sm">
                                                 {skill}
                                             </span>
                                         ))}
@@ -1461,7 +1723,7 @@
                         </div>
 
                         <div className="fade-in">
-                            <h3 className="text-2xl font-bold text-white light:text-slate-800 mb-8 text-center">
+                            <h3 className="text-xl sm:text-2xl font-bold text-white light:text-slate-800 mb-8 text-center">
                                 Skills in Action
                             </h3>
                             <div className="skills-showcase">
@@ -1555,28 +1817,28 @@
 
             return (
                 <section id="projects" className="bg-section">
-                    <div className="max-w-6xl mx-auto px-6">
+                    <div className="max-w-6xl mx-auto px-4 sm:px-6">
                         <div className="text-center mb-16 fade-in">
                             <h2 className="section-title text-white light:text-slate-800">
                                 Data Engineering <span className="gradient-text">Projects</span>
                             </h2>
                             <div className="title-underline"></div>
-                            <p className="text-xl text-slate-400 light:text-slate-500 max-w-3xl mx-auto">
+                            <p className="text-lg sm:text-xl text-slate-400 light:text-slate-500 max-w-3xl mx-auto">
                                 Hands-on projects demonstrating practical data engineering skills and problem-solving abilities.
                             </p>
                         </div>
 
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                             {projects.map((project, index) => (
                                 <div key={index} className="card overflow-hidden h-full hover:translate-y-2 transition-transform duration-300 fade-in">
                                     <div className="aspect-video bg-gradient-to-br from-blue-900/30 to-purple-900/30 light:from-blue-100 light:to-purple-100 flex items-center justify-center relative">
-                                        <i className={`${project.icon} text-blue-400 light:text-blue-500 text-4xl`}></i>
+                                        <i className={`${project.icon} text-blue-400 light:text-blue-500 text-3xl sm:text-4xl`}></i>
                                         <div className={`absolute top-3 right-3 project-status ${getStatusClass(project.status)}`}>
                                             {getStatusText(project.status)}
                                         </div>
                                     </div>
-                                    <div className="p-6">
-                                        <h3 className="text-xl font-bold text-white light:text-slate-800 mb-3">{project.title}</h3>
+                                    <div className="p-4 sm:p-6">
+                                        <h3 className="text-lg sm:text-xl font-bold text-white light:text-slate-800 mb-3">{project.title}</h3>
                                         <p className="text-slate-400 light:text-slate-500 text-sm leading-relaxed mb-4">
                                             {project.description}
                                         </p>
@@ -1692,21 +1954,21 @@
 
             return (
                 <section id="certifications" className="bg-section">
-                    <div className="max-w-6xl mx-auto px-6">
+                    <div className="max-w-6xl mx-auto px-4 sm:px-6">
                         <div className="text-center mb-16 fade-in">
                             <h2 className="section-title text-white light:text-slate-800">
                                 Certifications & <span className="gradient-text">Learning</span>
                             </h2>
                             <div className="title-underline"></div>
-                            <p className="text-xl text-slate-400 light:text-slate-500 max-w-3xl mx-auto">
+                            <p className="text-lg sm:text-xl text-slate-400 light:text-slate-500 max-w-3xl mx-auto">
                                 Continuous learning and professional development in data engineering technologies and methodologies.
                             </p>
                         </div>
 
-                        <div className="grid lg:grid-cols-2 gap-12">
+                        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12">
                             {/* Certifications */}
                             <div>
-                                <h3 className="text-2xl font-bold text-white light:text-slate-800 mb-8 fade-in">Certification Roadmap</h3>
+                                <h3 className="text-xl sm:text-2xl font-bold text-white light:text-slate-800 mb-8 fade-in">Certification Roadmap</h3>
                                 <div className="space-y-6">
                                     {certifications.map((cert, index) => (
                                         <div key={index} className="certification-card fade-in">
@@ -1716,7 +1978,7 @@
                                                 </div>
                                                 <div className="flex-1">
                                                     <div className="flex justify-between items-start mb-2">
-                                                        <h4 className="text-lg font-bold text-white light:text-slate-800">{cert.name}</h4>
+                                                        <h4 className="text-base sm:text-lg font-bold text-white light:text-slate-800">{cert.name}</h4>
                                                         {getStatusBadge(cert.status)}
                                                     </div>
                                                     <div className="space-y-2">
@@ -1747,16 +2009,16 @@
 
                             {/* Learning Resources */}
                             <div>
-                                <h3 className="text-2xl font-bold text-white light:text-slate-800 mb-8 fade-in">Learning Resources</h3>
+                                <h3 className="text-xl sm:text-2xl font-bold text-white light:text-slate-800 mb-8 fade-in">Learning Resources</h3>
                                 <div className="space-y-6">
                                     {learningResources.map((resource, index) => (
-                                        <div key={index} className="card p-6 fade-in">
+                                        <div key={index} className="card p-4 sm:p-6 fade-in">
                                             <div className="flex items-start gap-4">
-                                                <div className="w-12 h-12 bg-gradient-to-r from-blue-500/20 to-purple-500/20 light:from-blue-100 light:to-purple-100 rounded-xl flex items-center justify-center mt-1 flex-shrink-0">
+                                                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-blue-500/20 to-purple-500/20 light:from-blue-100 light:to-purple-100 rounded-xl flex items-center justify-center mt-1 flex-shrink-0">
                                                     <i className={`${resource.icon} text-blue-400 light:text-blue-500`}></i>
                                                 </div>
                                                 <div className="flex-1">
-                                                    <h4 className="text-lg font-bold text-white light:text-slate-800 mb-2">{resource.title}</h4>
+                                                    <h4 className="text-base sm:text-lg font-bold text-white light:text-slate-800 mb-2">{resource.title}</h4>
                                                     <p className="text-slate-400 light:text-slate-600 text-sm mb-2">
                                                         <strong>Provider:</strong> {resource.provider}
                                                     </p>
@@ -1769,7 +2031,7 @@
                                     ))}
                                 </div>
 
-                                <div className="card p-6 mt-8 fade-in">
+                                <div className="card p-4 sm:p-6 mt-8 fade-in">
                                     <h4 className="text-lg font-bold text-white light:text-slate-800 mb-4">Learning Focus Areas</h4>
                                     <div className="flex flex-wrap gap-2">
                                         <span className="skill-badge">Cloud Data Engineering</span>
@@ -1893,22 +2155,22 @@
                         onClose={closeToast} 
                     />
                     
-                    <div className="max-w-6xl mx-auto px-6">
+                    <div className="max-w-6xl mx-auto px-4 sm:px-6">
                         <div className="text-center mb-16 fade-in">
                             <h2 className="section-title text-white light:text-slate-800">
                                 Get In <span className="gradient-text">Touch</span>
                             </h2>
                             <div className="title-underline"></div>
-                            <p className="text-xl text-slate-400 light:text-slate-500 max-w-3xl mx-auto">
+                            <p className="text-lg sm:text-xl text-slate-400 light:text-slate-500 max-w-3xl mx-auto">
                                 Interested in data engineering opportunities or want to discuss a project? I'd love to hear from you.
                             </p>
                         </div>
 
-                        <div className="grid md:grid-cols-2 gap-12">
+                        <div className="grid md:grid-cols-2 gap-8 sm:gap-12">
                             <div className="space-y-8 fade-in">
                                 <div>
-                                    <h3 className="text-2xl font-bold text-white light:text-slate-800 mb-6">Let's Connect</h3>
-                                    <p className="text-slate-400 light:text-slate-500 leading-relaxed">
+                                    <h3 className="text-xl sm:text-2xl font-bold text-white light:text-slate-800 mb-6">Let's Connect</h3>
+                                    <p className="text-slate-400 light:text-slate-500 leading-relaxed text-base sm:text-lg">
                                         I'm actively seeking opportunities to apply my data engineering skills and learn from experienced professionals. Whether you have a project in mind, want to discuss data engineering concepts, or have career advice, I'm always open to conversations.
                                     </p>
                                 </div>
@@ -1920,12 +2182,12 @@
                                             href={method.link}
                                             className="flex items-center gap-4 p-4 rounded-lg hover:bg-slate-800 light:hover:bg-white transition-colors duration-300 group"
                                         >
-                                            <div className="w-12 h-12 bg-gradient-to-r from-blue-500/20 to-purple-500/20 light:from-blue-100 light:to-purple-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-blue-500/20 to-purple-500/20 light:from-blue-100 light:to-purple-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                                                 <i className={`${method.icon} text-blue-400 light:text-blue-500`}></i>
                                             </div>
                                             <div>
-                                                <div className="font-semibold text-white light:text-slate-800">{method.title}</div>
-                                                <div className="text-slate-400 light:text-slate-500">{method.value}</div>
+                                                <div className="font-semibold text-white light:text-slate-800 text-base sm:text-lg">{method.title}</div>
+                                                <div className="text-slate-400 light:text-slate-500 text-sm sm:text-base">{method.value}</div>
                                             </div>
                                         </a>
                                     ))}
@@ -1959,7 +2221,7 @@
                                 </div>
                             </div>
 
-                            <div className="card p-8 fade-in">
+                            <div className="card p-4 sm:p-6 md:p-8 fade-in">
                                 <form onSubmit={handleSubmit} className="space-y-6">
                                     <div>
                                         <label htmlFor="name" className="block text-sm font-medium text-slate-300 light:text-slate-700 mb-2">
@@ -2054,12 +2316,12 @@
         function Footer() {
             return (
                 <footer className="bg-slate-900 text-white py-12">
-                    <div className="max-w-6xl mx-auto px-6 text-center">
+                    <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
                         <div className="flex flex-col items-center">
                             <div className="font-bold text-2xl text-white mb-4">
                                 Matthew Lawrence L
                             </div>
-                            <p className="text-slate-400 max-w-2xl mx-auto mb-8">
+                            <p className="text-slate-400 max-w-2xl mx-auto mb-8 text-base sm:text-lg">
                                 Building scalable data infrastructure and transforming data into actionable insights.
                             </p>
                             
@@ -2077,8 +2339,6 @@
                                     <i className="fab fa-medium text-xl"></i>
                                 </a>
                             </div>
-                            
-                           
                             
                             <div className="border-t border-slate-800 w-full pt-8">
                                 <p className="text-slate-500">
